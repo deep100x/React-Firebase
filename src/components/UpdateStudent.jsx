@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { getDatabase, ref, set } from "firebase/database"
+import { getDatabase, ref, set, serverTimestamp } from "firebase/database" // Import serverTimestamp
 import app from "../Firebase.js"
 import { useNavigate, useLocation } from "react-router-dom"
 
@@ -16,6 +16,7 @@ const AddStudent = () => {
 		set(ref(db, "student/" + admNo), {
 			userName: userName,
 			password: password,
+			createdAt: serverTimestamp(),
 		})
 			.then((res) => {
 				navigate("/studentList")

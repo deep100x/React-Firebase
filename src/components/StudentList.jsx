@@ -12,7 +12,6 @@ const StudentList = () => {
 		const studentRef = ref(db, "student")
 		onValue(studentRef, (snapshot) => {
 			const data = snapshot.val()
-			console.log(data)
 			setStudentData(data)
 		})
 	}, [])
@@ -34,31 +33,43 @@ const StudentList = () => {
 			<h1>StudentList</h1>
 			{studentData && (
 				<div>
-					{Object.entries(studentData).map(([key, value]) => {
-						return (
-							<div key={key} className="flex gap-5">
-								<p>Name : {value.userName}</p>
-								<p>Password : {value.password}</p>
-								<button
-									onClick={() => {
-										// updateData(key)
-										navigate("/updateStudent", { state: [key, value] })
-									}}
-									className="text-indigo-500"
-								>
-									Update
-								</button>
-								<button
-									onClick={() => {
-										deleteData(key)
-									}}
-									className="text-red-500"
-								>
-									delete
-								</button>
-							</div>
-						)
-					})}
+					<table className="table-fixed overflow-auto">
+						<thead>
+							<tr>
+								<th className="w-[200px]">Name</th>
+								<th className="w-[200px]">Password</th>
+								<th className="w-[200px]">Date</th>
+								<th className="w-[200px]">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{Object.entries(studentData).map(([key, value]) => (
+								<tr key={key}>
+									<td className="border-2">{value.userName}</td>
+									<td className="border-2">{value.password}</td>
+									<td className="border-2">{value.createdAt ? new Date(value.createdAt).toLocaleString() : "N/A"}</td>
+									<td className="border-2 flex justify-center items-center">
+										<button
+											onClick={() => {
+												navigate("/updateStudent", { state: [key, value] })
+											}}
+											className="text-indigo-500"
+										>
+											Update
+										</button>
+										<button
+											onClick={() => {
+												deleteData(key)
+											}}
+											className="text-red-500"
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				</div>
 			)}
 		</div>

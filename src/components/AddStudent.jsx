@@ -1,5 +1,5 @@
 import React from "react"
-import { getDatabase, ref, set } from "firebase/database"
+import { getDatabase, ref, set, serverTimestamp } from "firebase/database"
 import app from "../Firebase.js"
 
 import { Formik, Form, Field, ErrorMessage } from "formik"
@@ -24,18 +24,18 @@ const AddStudent = () => {
 		resetForm()
 		setSubmitting(false)
 
-		const db = getDatabase()
+		const db = getDatabase(app)
 		set(ref(db, "student/" + values.admNo), {
 			userName: values.name,
 			password: values.password,
+			createdAt: serverTimestamp(),
 		})
 			.then((res) => {
 				navigate("/studentList")
 			})
 			.catch((err) => {
-				console.log("err")
+				console.log("Error:", err)
 			})
-		console.log(values)
 	}
 
 	return (
